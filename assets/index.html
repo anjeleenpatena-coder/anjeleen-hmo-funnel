@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anjeleen | HMO & Health Protection Consultant</title>
+<meta name="description" content="Protect your health before you need it. Maxicare, AYOS HealthCard, and full HMO consultations with Anjeleen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- ================= META (FACEBOOK) PIXEL ================= -->
+<!-- Get your Pixel ID from Meta Ads Manager > Events Manager > Data Sources.
+     Replace YOUR_PIXEL_ID_HERE below with that number (digits only). -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR_PIXEL_ID_HERE');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1"
+/></noscript>
+<!-- =========================================================== -->
+<style>
+  :root{
+    --pink:#D6336C;
+    --pink-dark:#B02458;
+    --pink-bg:#FDF1F5;
+    --pink-pale:#FFE3EC;
+    --ink:#2B2230;
+    --muted:#7A6873;
+    --blue:#1565C0;
+    --blue-bg:#EAF4FE;
+    --blue-border:#CFE6FB;
+    --green:#1B8A4B;
+    --green-bg:#EAF7EF;
+    --green-border:#CBEBD8;
+    --navy:#2C3350;
+    --navy-bg:#EEF0F7;
+    --navy-border:#D6DAEA;
+    --white:#fff;
+    --shadow:0 10px 30px rgba(214,51,108,0.10);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Inter',sans-serif;color:var(--ink);background:#fff;line-height:1.55;}
+  h1,h2,h3,h4{font-family:'Poppins',sans-serif;margin:0;line-height:1.2;}
+  p{margin:0;}
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:600;font-size:15px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--pink);color:#fff;box-shadow:0 8px 20px rgba(214,51,108,.28);}
+  .btn-primary:hover{background:var(--pink-dark);}
+  .btn-outline{background:#fff;color:var(--pink);border:1.5px solid var(--pink);}
+  .btn-outline:hover{background:var(--pink-bg);}
+  .btn-blue{background:var(--blue);color:#fff;}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-navy{background:var(--navy);color:#fff;}
+  .btn-block{width:100%;justify-content:center;}
+  .btn-sm{padding:10px 18px;font-size:13.5px;}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #F3E3EA;}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
+  .logo{display:flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;color:var(--pink);}
+  .logo small{display:block;font-family:'Inter';font-weight:500;font-size:10.5px;color:var(--muted);letter-spacing:.02em;}
+  .navlinks{display:flex;gap:26px;font-weight:500;font-size:14.5px;color:var(--ink);}
+  .navlinks a:hover{color:var(--pink);}
+  .navcta{display:flex;align-items:center;gap:14px;}
+  .hamburger{display:none;background:none;font-size:22px;color:var(--pink);}
+  @media(max-width:860px){
+    .navlinks{position:fixed;top:64px;left:0;right:0;background:#fff;flex-direction:column;padding:18px 24px;gap:16px;box-shadow:0 12px 20px rgba(0,0,0,.06);display:none;}
+    .navlinks.open{display:flex;}
+    .hamburger{display:block;}
+    .navcta .btn span{display:none;}
+  }
+
+  /* HERO */
+  .hero{background:linear-gradient(180deg,var(--pink-bg) 0%, #fff 100%);padding:56px 0 40px;overflow:hidden;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;}
+  .eyebrow{color:var(--pink);font-weight:600;font-size:13.5px;margin-bottom:10px;}
+  .hero h1{font-size:clamp(30px,4.4vw,46px);font-weight:800;color:var(--ink);}
+  .hero h1 em{font-style:normal;color:var(--pink);}
+  .hero p.lead{margin-top:16px;font-size:17px;color:var(--muted);max-width:52ch;}
+  .trust-row{display:flex;gap:22px;margin-top:22px;flex-wrap:wrap;}
+  .trust-item{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;color:var(--ink);}
+  .trust-item .dot{width:30px;height:30px;border-radius:50%;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .hero-cta{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap;}
+  .hero-quote{margin-top:26px;font-style:italic;color:var(--pink-dark);font-size:14.5px;border-left:3px solid var(--pink);padding-left:14px;}
+  .hero-photo-wrap{position:relative;display:flex;justify-content:center;}
+  .hero-photo{width:100%;max-width:360px;border-radius:24px;box-shadow:var(--shadow);}
+  .hero-bubble{position:absolute;top:-6px;right:6px;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);font-size:13px;font-weight:600;color:var(--pink-dark);max-width:170px;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}.hero-photo-wrap{order:-1;}.hero-bubble{display:none;}}
+
+  /* SECTION HEADS */
+  .section{padding:64px 0;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 40px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);color:var(--pink-dark);font-weight:700;}
+  .section-head p{margin-top:8px;color:var(--muted);font-size:15.5px;}
+
+  /* OPTION CARDS */
+  .options-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media(max-width:1000px){.options-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:620px){.options-grid{grid-template-columns:1fr;}}
+  .opt-card{border-radius:var(--radius);padding:26px 22px;border:1.5px solid;display:flex;flex-direction:column;gap:14px;}
+  .opt-card h3{font-size:19px;}
+  .opt-card .tag{font-size:11.5px;font-weight:600;letter-spacing:.02em;color:var(--muted);}
+  .opt-card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .opt-card li{font-size:13.8px;padding-left:22px;position:relative;color:var(--ink);}
+  .opt-card li:before{content:"✓";position:absolute;left:0;font-weight:700;}
+  .opt-blue{background:var(--blue-bg);border-color:var(--blue-border);}
+  .opt-blue li:before{color:var(--blue);}
+  .opt-green{background:var(--green-bg);border-color:var(--green-border);}
+  .opt-green li:before{color:var(--green);}
+  .opt-pink{background:var(--pink-bg);border-color:var(--pink-pale);}
+  .opt-pink li:before{color:var(--pink);}
+  .opt-navy{background:var(--navy-bg);border-color:var(--navy-border);}
+  .opt-navy li:before{color:var(--navy);}
+
+  .quote-band{background:var(--pink-bg);padding:38px 0;text-align:center;}
+  .quote-band p{font-family:'Poppins';font-style:italic;font-size:18px;color:var(--pink-dark);max-width:700px;margin:0 auto;font-weight:600;}
+  .quote-band span{display:block;margin-top:10px;font-size:13px;color:var(--muted);font-style:normal;}
+
+  .feature-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media(max-width:800px){.feature-row{grid-template-columns:1fr 1fr;}}
+  .feature{text-align:center;padding:0 10px;}
+  .feature .ic{width:52px;height:52px;border-radius:50%;background:var(--pink-pale);color:var(--pink);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;}
+  .feature h4{font-size:15px;margin-bottom:4px;}
+  .feature p{font-size:13px;color:var(--muted);}
+
+  /* TESTIMONIALS */
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:800px){.testi-grid{grid-template-columns:1fr;}}
+  .testi{background:#fff;border:1px solid #F3E3EA;border-radius:var(--radius);padding:22px;box-shadow:0 4px 16px rgba(0,0,0,.03);}
+  .testi p{font-size:14px;color:var(--ink);}
+  .testi .who{margin-top:14px;display:flex;align-items:center;gap:10px;}
+  .testi .avatar{width:36px;height:36px;border-radius:50%;background:var(--pink-pale);color:var(--pink-dark);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+  .stars{color:#F5A623;font-size:13px;}
+
+  /* CONTACT BAND */
+  .contact-band{background:var(--pink);border-radius:20px;padding:30px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#fff;}
+  .contact-band h3{font-size:19px;}
+  .contact-band p{font-size:13.5px;opacity:.9;margin-top:4px;}
+  .contact-band .num{font-weight:700;font-size:15px;}
+
+  footer{background:#231A22;color:#e9d9e0;padding:44px 0 24px;font-size:13.5px;}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;padding-bottom:24px;border-bottom:1px solid #3a2c37;}
+  .foot-logo{font-family:'Poppins';font-weight:700;font-size:18px;color:#fff;}
+  .foot-links{display:flex;gap:18px;flex-wrap:wrap;}
+  .copyright{padding-top:18px;text-align:center;color:#9a8590;font-size:12px;}
+
+  /* MODALS */
+  .modal-overlay{position:fixed;inset:0;background:rgba(43,34,48,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:200;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:#fff;border-radius:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:30px 26px;position:relative;}
+  .modal-close{position:absolute;top:14px;right:16px;background:none;font-size:20px;color:var(--muted);}
+  .modal h3{color:var(--pink-dark);font-size:20px;margin-bottom:6px;}
+  .modal .sub{color:var(--muted);font-size:13.5px;margin-bottom:18px;}
+  .modal label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;}
+  .modal input,.modal select,.modal textarea,.exit-card input{width:100%;padding:11px 13px;border:1.5px solid #eadce1;border-radius:10px;font-family:inherit;font-size:14px;background:#fdfaf9;margin-bottom:10px;}
+  .modal textarea{resize:vertical;min-height:64px;}
+  .modal .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .qr-box{text-align:center;background:var(--pink-bg);border-radius:14px;padding:16px;margin:14px 0;}
+  .qr-box img{width:170px;margin:0 auto 8px;border-radius:8px;}
+  .qr-box p{font-size:12.5px;color:var(--muted);}
+  .calc-box{display:flex;align-items:center;gap:12px;background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:14px;padding:14px 16px;margin:14px 0 10px;}
+  .calc-box-icon{width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .calc-box-title{font-weight:700;font-size:13.5px;color:var(--blue);}
+  .calc-box-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+  .link-btns{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+  .form-msg{margin-top:14px;font-size:13.5px;padding:10px 12px;border-radius:10px;display:none;}
+  .form-msg.ok{background:#E7F6EC;color:#1B8A4B;display:block;}
+  .form-msg.err{background:#FCEAEA;color:#C0392B;display:block;}
+  .orient-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:14px;padding:16px;margin:14px 0;font-size:13.5px;}
+  .orient-box b{color:var(--green);}
+
+  /* CHATBOT */
+  .chat-fab{position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--pink);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(214,51,108,.4);z-index:150;}
+  .chat-panel{position:fixed;bottom:96px;right:22px;width:330px;max-width:88vw;max-height:70vh;background:#fff;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.18);display:none;flex-direction:column;z-index:150;overflow:hidden;}
+  .chat-panel.open{display:flex;}
+  .chat-head{background:var(--pink);color:#fff;padding:14px 16px;font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:10px;}
+  .chat-head .bot-ic{width:30px;height:30px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--pink);font-size:15px;}
+  .chat-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#fff8fa;}
+  .msg{max-width:88%;padding:9px 13px;border-radius:14px;font-size:13.3px;line-height:1.45;}
+  .msg.bot{background:var(--pink-pale);color:var(--ink);align-self:flex-start;border-bottom-left-radius:4px;}
+  .msg.user{background:var(--pink);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+  .quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;}
+  .qr-chip{background:#fff;border:1.3px solid var(--pink-pale);color:var(--pink-dark);font-size:11.8px;padding:6px 10px;border-radius:999px;font-weight:600;}
+  .chat-input{display:flex;border-top:1px solid #f3e3ea;}
+  .chat-input input{flex:1;border:none;padding:12px 14px;font-size:13.5px;font-family:inherit;}
+  .chat-input button{background:var(--pink);color:#fff;padding:0 18px;font-weight:600;}
+
+  /* EXIT POPUP */
+  .exit-overlay{position:fixed;inset:0;background:rgba(43,34,48,.6);display:none;align-items:center;justify-content:center;z-index:300;padding:20px;}
+  .exit-overlay.open{display:flex;}
+  .exit-card{background:#fff;border-radius:20px;max-width:380px;width:100%;padding:30px 26px;text-align:center;position:relative;}
+  .exit-card .modal-close{top:12px;right:14px;}
+  .exit-card h3{color:var(--pink-dark);font-size:20px;margin-bottom:8px;}
+  .exit-card p{font-size:13.8px;color:var(--muted);margin-bottom:16px;}
+
+  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;font-size:13.5px;z-index:400;display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">
+      ♥ Anjeleen
+      <small style="font-weight:400;">HMO &amp; Protection Consultant</small>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="#home" onclick="closeNav()">Home</a>
+      <a href="#options" onclick="closeNav()">HMO Options</a>
+      <a href="#testimonials" onclick="closeNav()">Testimonials</a>
+      <a href="#contact" onclick="closeNav()">Contact</a>
+    </nav>
+    <div class="navcta">
+      <button class="hamburger" onclick="toggleNav()">☰</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-consultation')"><span>Get</span> Started →</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">HEALTHY TODAY. BRIGHTER TOMORROW.</p>
+      <h1>Protect your health <em>before you need it.</em></h1>
+      <p class="lead">Affordable HMO and health protection options for you and your loved ones — Maxicare, AYOS HealthCard, and personal consultations, all in one place.</p>
+      <div class="trust-row">
+        <div class="trust-item"><span class="dot">♥</span> More peace of mind</div>
+        <div class="trust-item"><span class="dot">🛡</span> More financial security</div>
+        <div class="trust-item"><span class="dot">👪</span> A healthier tomorrow</div>
+      </div>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('options').scrollIntoView({behavior:'smooth'})">Explore HMO Options →</button>
+        <button class="btn btn-outline" onclick="openModal('modal-consultation')">📅 Book a FREE Consultation</button>
+      </div>
+      <p class="hero-quote">"Prepare while you're healthy. Protect what matters while you can." — Anjeleen</p>
+    </div>
+    <div class="hero-photo-wrap">
+      <img class="hero-photo" src="assets/profile.jpg" alt="Anjeleen, HMO and Health Protection Consultant">
+      <div class="hero-bubble">Let's build a healthier, more secure tomorrow 💬</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="options">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Explore Your HMO & Health Protection Options</h2>
+      <p>Quality healthcare. Real value. Options for every need.</p>
+    </div>
+    <div class="options-grid">
+
+      <div class="opt-card opt-blue">
+        <p class="tag">MAXICARE</p>
+        <h3>Maxicare Prepaid Cards</h3>
+        <ul>
+          <li>PRIMA — affordable prepaid HMO</li>
+          <li>LifeSaver+ — more comprehensive benefits</li>
+          <li>For individuals and families</li>
+          <li>Access to accredited clinics & hospitals</li>
+          <li>Also available for SME, groups, freelancers & corporations</li>
+        </ul>
+        <button class="btn btn-blue btn-block" onclick="openModal('modal-maxicare')">View Maxicare Plans →</button>
+      </div>
+
+      <div class="opt-card opt-green">
+        <p class="tag">AYOS HEALTHCARD · POWERED BY PHILCARE</p>
+        <h3>AYOS HealthCard</h3>
+        <ul>
+          <li>Different plan options</li>
+          <li>Accepted in partner clinics & hospitals</li>
+          <li>Ideal for individuals and families</li>
+          <li>Pre-existing illness covered from Day 1</li>
+          <li>Free weekly product orientation</li>
+        </ul>
+        <button class="btn btn-green btn-block" onclick="openModal('modal-ayos')">Learn About AYOS →</button>
+      </div>
+
+      <div class="opt-card opt-pink">
+        <p class="tag">PERSONAL</p>
+        <h3>Full HMO Consultation</h3>
+        <ul>
+          <li>Personalized needs analysis</li>
+          <li>Compare available options</li>
+          <li>Discuss budget & priorities</li>
+          <li>Schedule a FREE Zoom consultation</li>
+        </ul>
+        <button class="btn btn-primary btn-block" onclick="openModal('modal-consultation')">Book a FREE Consultation →</button>
+      </div>
+
+      <div class="opt-card opt-navy">
+        <p class="tag">FOR BUSINESSES</p>
+        <h3>Corporate Full Coverage HMO</h3>
+        <ul>
+          <li>Custom plans for your workforce</li>
+          <li>Coverage across accredited providers</li>
+          <li>Dedicated onboarding support</li>
+          <li>Free Zoom product presentation</li>
+        </ul>
+        <button class="btn btn-navy btn-block" onclick="openModal('modal-corporate')">Book a Presentation →</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="quote-band">
+  <p>"You don't plan to get sick. You plan so that sickness doesn't completely disrupt your life."<span>— Anjeleen</span></p>
+</div>
+
+<section class="section">
+  <div class="wrap feature-row">
+    <div class="feature"><div class="ic">🛡</div><h4>Be Prepared</h4><p>For life's unexpected moments.</p></div>
+    <div class="feature"><div class="ic">💰</div><h4>Protect Your Finances</h4><p>Avoid high medical expenses.</p></div>
+    <div class="feature"><div class="ic">👪</div><h4>Take Care of Loved Ones</h4><p>Because their health matters too.</p></div>
+    <div class="feature"><div class="ic">🌤</div><h4>Live a Healthier Tomorrow</h4><p>Invest in your well-being today.</p></div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--pink-bg);" id="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What Our Clients Say</h2>
+      <p>Real people. Real stories. A healthier tomorrow.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi"><div class="stars">★★★★★</div><p>"Very accommodating and helpful. Naliwanagan po ako sa mga options at na-process ko na agad ang PRIMA. Thank you, Anjeleen!"</p><div class="who"><div class="avatar">M</div><b>Maria S.</b></div></div>
+      <div class="testi"><div class="stars">★★★★★</div><p>"Sobrang dali ng process at may gabay talaga. Highly recommended si Anjeleen. Legit and trustworthy!"</p><div class="who"><div class="avatar">J</div><b>John D.</b></div></div>
+      <div class="testi"><div class="stars">★★★★★</div><p>"Thank you for assisting me sa AYOS HealthCard. Ang ganda ng orientation, very informative!"</p><div class="who"><div class="avatar">L</div><b>Liza M.</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact-band">
+      <div>
+        <h3>Need help? I'm here for you.</h3>
+        <p>Having trouble with checkout, registration, or activation? Reach me anytime.</p>
+      </div>
+      <div style="text-align:right;">
+        <p class="num">WhatsApp / Viber: +63 933 855 2646</p>
+        <a class="btn" style="background:#fff;color:var(--pink-dark);margin-top:8px;" id="whatsapp-cta" href="#" target="_blank">💬 Message Me Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">♥ Anjeleen</div>
+        <p style="margin-top:6px;max-width:260px;">HMO & Health Protection Consultant. Your health. My priority.</p>
+      </div>
+      <div class="foot-links">
+        <a href="#home">Home</a><a href="#options">HMO Options</a><a href="#testimonials">Testimonials</a><a href="#contact">Contact</a>
+      </div>
+    </div>
+    <p class="copyright">© 2026 Anjeleen | HMO & Health Protection Consultant. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ============ MODAL: MAXICARE ============ -->
+<div class="modal-overlay" id="modal-maxicare">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-maxicare')">✕</button>
+    <h3>Maxicare Prepaid Healthcards</h3>
+    <p class="sub">Choose a plan, buy securely online, and get instantly covered.</p>
+    <div class="link-btns">
+      <a class="btn btn-blue btn-block" id="link-lifesaver" href="#" target="_blank" onclick="trackClick('LifeSaver+')">LifeSaver+ — Buy Prepaid Card →</a>
+      <a class="btn btn-outline btn-block" id="link-prima" href="#" target="_blank" onclick="trackClick('PRIMA')">PRIMA — Buy Prepaid Card →</a>
+      <button class="btn btn-navy btn-block" type="button" onclick="closeModal('modal-maxicare');openModal('modal-corporate')">For SME / Groups / Freelancers / Corporations →</button>
+    </div>
+    <div class="qr-box">
+      <img src="assets/qr-maxicare.png" alt="Scan to buy Maxicare prepaid healthcard">
+      <p>Or scan this QR code to buy your Maxicare prepaid healthcard directly.</p>
+    </div>
+    <div class="calc-box">
+      <div class="calc-box-icon">🧮</div>
+      <div style="flex:1;">
+        <p class="calc-box-title">Not sure what it'll cost you?</p>
+        <p class="calc-box-sub">Get an instant estimate based on your age and plan.</p>
+      </div>
+    </div>
+    <a class="btn btn-outline btn-block" id="link-calculator" href="#" target="_blank" onclick="trackClick('Premium Calculator')">🧮 Compute Your Premiums Here →</a>
+    <div class="link-btns" style="margin-top:14px;">
+      <a class="btn btn-block" style="background:#fff;color:var(--blue);border:1.5px solid var(--blue-border);" id="link-hospitals" href="#" target="_blank" onclick="trackClick('Accredited Hospitals')">🏥 Find Accredited Hospitals & Clinics →</a>
+      <a class="btn btn-block" style="background:#fff;color:var(--blue);border:1.5px solid var(--blue-border);" id="link-clinics" href="#" target="_blank" onclick="trackClick('Primary Care Clinics')">📍 Primary Care Clinic Branches →</a>
+    </div>
+    <p class="sub" style="margin-top:14px;">Questions about which plan fits you? <a href="#" style="color:var(--pink);font-weight:600;" onclick="closeModal('modal-maxicare');openModal('modal-consultation')">Book a free consultation instead →</a></p>
+  </div>
+</div>
+
+<!-- ============ MODAL: AYOS / PHILCARE ============ -->
+<div class="modal-overlay" id="modal-ayos">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-ayos')">✕</button>
+    <h3>AYOS HealthCard — Powered by PhilCare</h3>
+    <p class="sub">Affordable. Accessible. For a healthier tomorrow.</p>
+    <div class="calc-box" style="background:var(--green-bg);border-color:var(--green-border);">
+      <div class="calc-box-icon">✅</div>
+      <div style="flex:1;">
+        <p class="calc-box-title" style="color:var(--green);">Pre-Existing Illness Covered from Day 1</p>
+        <p class="calc-box-sub">No waiting period — you're protected as soon as you're enrolled.</p>
+      </div>
+    </div>
+    <a class="btn btn-green btn-block" id="link-philcare" href="#" target="_blank" onclick="trackClick('PhilCare/AYOS')">Buy AYOS / PhilCare Prepaid Card →</a>
+    <div class="qr-box">
+      <img src="assets/qr-philcare.png" alt="Scan to find affiliated PhilCare providers">
+      <p>Scan to search for affiliated hospitals & clinics near you.</p>
+    </div>
+    <div class="orient-box">
+      <b>Free Product Orientation</b><br>
+      <span id="ayos-schedule">Every Tuesday, 7:00 – 8:00 PM (Philippine Time)</span>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px;">Enter your details and we'll email you the Zoom link right away.</p>
+      <form id="form-ayos" onsubmit="return submitOrientation(event,'ayos')" style="margin-top:8px;">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="tel" name="phone" placeholder="Contact Number" required>
+        <button class="btn btn-green btn-sm btn-block" type="submit">Get the Zoom Link →</button>
+        <div class="form-msg" id="msg-ayos"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: FULL HMO CONSULTATION ============ -->
+<div class="modal-overlay" id="modal-consultation">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-consultation')">✕</button>
+    <h3>Book a FREE HMO Consultation</h3>
+    <p class="sub">Not sure which plan is right for you? Let's talk it through on Zoom.</p>
+    <form id="form-consultation" onsubmit="return submitLead(event,'full_hmo_consultation')">
+      <label>Full Name</label>
+      <input type="text" name="name" required>
+      <label>Email Address</label>
+      <input type="email" name="email" required>
+      <label>Age</label>
+      <input type="number" name="age" min="1" max="120" required>
+      <label>Do you have any pre-existing condition?</label>
+      <select name="preexisting">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        <option value="Not sure">Not sure</option>
+      </select>
+      <label>Anything I need to know before our online consultation?</label>
+      <textarea name="notes" placeholder="Optional — share any questions or concerns"></textarea>
+      <div class="row2">
+        <div><label>Preferred Date</label><input type="date" name="date" required></div>
+        <div><label>Preferred Time</label><input type="time" name="time" required></div>
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:18px;" type="submit">Book My Free Consultation →</button>
+      <div class="form-msg" id="msg-consultation"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MODAL: CORPORATE HMO ============ -->
+<div class="modal-overlay" id="modal-corporate">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-corporate')">✕</button>
+    <h3>Corporate Full Coverage HMO</h3>
+    <p class="sub">Tell us about your company and we'll prepare a tailored presentation.</p>
+    <form id="form-corporate" onsubmit="return submitLead(event,'corporate_hmo')">
+      <label>Authorized / Contact Personnel</label>
+      <input type="text" name="contact_person" required>
+      <label>Position</label>
+      <input type="text" name="position" required>
+      <label>Company Name</label>
+      <input type="text" name="company" required>
+      <label>Location</label>
+      <input type="text" name="location" required>
+      <label>Number of Employees</label>
+      <input type="number" name="employees" min="1" required>
+      <label>Nature of Business</label>
+      <input type="text" name="business_nature" required>
+      <label>Email Address <span style="font-weight:400;color:var(--muted);">(we'll send the Zoom link here)</span></label>
+      <input type="email" name="email" required>
+      <div class="row2">
+        <div><label>Preferred Date</label><input type="date" name="date" required></div>
+        <div><label>Preferred Time</label><input type="time" name="time" required></div>
+      </div>
+      <button class="btn btn-navy btn-block" style="margin-top:18px;" type="submit">Book Product Presentation →</button>
+      <div class="form-msg" id="msg-corporate"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ EXIT INTENT POPUP ============ -->
+<div class="exit-overlay" id="exit-popup">
+  <div class="exit-card">
+    <button class="modal-close" onclick="closeExitPopup()">✕</button>
+    <h3>Wait — before you go 👋</h3>
+    <p>Join our <b>FREE AYOS HealthCard Orientation</b>, <span id="exit-schedule">every Tuesday, 7:00–8:00 PM (PHT)</span>, and learn how to protect your family without breaking the budget.</p>
+    <form id="form-ayos-exit" onsubmit="return submitOrientation(event,'exit')">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="tel" name="phone" placeholder="Contact Number" required>
+      <button class="btn btn-primary btn-block" type="submit">Save My Spot on Zoom →</button>
+      <div class="form-msg" id="msg-exit"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ CHATBOT ============ -->
+<button class="chat-fab" onclick="toggleChat()" aria-label="Chat with Anjeleen's HMO Assistant">💬</button>
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-head"><span class="bot-ic">🤖</span> Anjeleen's HMO Assistant</div>
+  <div class="quick-replies">
+    <button class="qr-chip" onclick="askBot('Tell me about Maxicare plans')">Maxicare Plans</button>
+    <button class="qr-chip" onclick="askBot('Tell me about AYOS HealthCard')">AYOS HealthCard</button>
+    <button class="qr-chip" onclick="askBot('Compare plans')">Compare Plans</button>
+    <button class="qr-chip" onclick="askBot('Book a consultation')">Book Consultation</button>
+    <button class="qr-chip" onclick="askBot('Corporate HMO for my company')">Corporate HMO</button>
+    <button class="qr-chip" onclick="askBot('Talk to Anjeleen')">Talk to Anjeleen</button>
+  </div>
+  <div class="chat-body" id="chat-body"></div>
+  <div class="chat-input">
+    <input type="text" id="chat-text" placeholder="Type your question..." onkeydown="if(event.key==='Enter'){sendChat();}">
+    <button onclick="sendChat()">Send</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= EDITABLE CONFIG ================= */
+/* Paste your Apps Script Web App URL here after deploying code.gs (see README) */
+const CONFIG = {
+  GOOGLE_SCRIPT_URL: "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE",
+  WHATSAPP_NUMBER: "639338552646",
+  MAXICARE_LIFESAVER_LINK: "https://shop.maxicare.com.ph/?maxi-link=QW5qZWxlZW5QYXRlbmE=",
+  MAXICARE_PRIMA_LINK: "https://www.shop.maxihealth.com.ph/?salesAgentId=69c60cbef7a144c32a7765e5",
+  MAXICARE_PREMIUM_CALCULATOR: "https://maxicarepremiumcalculator.lovable.app/",
+  MAXICARE_HOSPITALS_LINK: "https://www.maxicare.com.ph/get-care/find-doctors-clinics-and-hospitals/",
+  MAXICARE_CLINICS_LINK: "https://www.maxicare.com.ph/get-care/primary-care-clinic/",
+  PHILCARE_LINK: "https://shop.philcare.com.ph/?affiliate_code=A1U0010906054",
+  DEFAULT_AYOS_ZOOM: "https://us06web.zoom.us/j/89078956838",
+  DEFAULT_AYOS_SCHEDULE: "Every Tuesday, 7:00 – 8:00 PM (Philippine Time)"
+};
+/* ==================================================== */
+
+let CURRENT_ZOOM_LINK = CONFIG.DEFAULT_AYOS_ZOOM;
+let CURRENT_ZOOM_SCHEDULE = CONFIG.DEFAULT_AYOS_SCHEDULE;
+
+// ---- UTM capture ----
+function getUTMs(){
+  const p = new URLSearchParams(window.location.search);
+  const utm = {
+    utm_source: p.get('utm_source') || sessionStorage.getItem('utm_source') || 'direct',
+    utm_medium: p.get('utm_medium') || sessionStorage.getItem('utm_medium') || 'none',
+    utm_campaign: p.get('utm_campaign') || sessionStorage.getItem('utm_campaign') || 'none'
+  };
+  sessionStorage.setItem('utm_source', utm.utm_source);
+  sessionStorage.setItem('utm_medium', utm.utm_medium);
+  sessionStorage.setItem('utm_campaign', utm.utm_campaign);
+  return utm;
+}
+
+// ---- Links with UTM appended ----
+function withUTM(url){
+  const utm = getUTMs();
+  const sep = url.includes('?') ? '&' : '?';
+  return url + sep + 'utm_source=' + utm.utm_source + '&utm_medium=' + utm.utm_medium + '&utm_campaign=' + utm.utm_campaign;
+}
+
+function setupLinks(){
+  document.getElementById('link-lifesaver').href = withUTM(CONFIG.MAXICARE_LIFESAVER_LINK);
+  document.getElementById('link-prima').href = withUTM(CONFIG.MAXICARE_PRIMA_LINK);
+  document.getElementById('link-philcare').href = withUTM(CONFIG.PHILCARE_LINK);
+  document.getElementById('link-calculator').href = CONFIG.MAXICARE_PREMIUM_CALCULATOR;
+  document.getElementById('link-hospitals').href = CONFIG.MAXICARE_HOSPITALS_LINK;
+  document.getElementById('link-clinics').href = CONFIG.MAXICARE_CLINICS_LINK;
+  document.getElementById('whatsapp-cta').href = 'https://wa.me/' + CONFIG.WHATSAPP_NUMBER + '?text=Hi%20Anjeleen%2C%20I%20have%20a%20question%20about%20HMO%20plans.';
+  applyZoomSettings(CONFIG.DEFAULT_AYOS_ZOOM, CONFIG.DEFAULT_AYOS_SCHEDULE);
+}
+
+function applyZoomSettings(link, schedule){
+  CURRENT_ZOOM_LINK = link;
+  CURRENT_ZOOM_SCHEDULE = schedule;
+  const s1 = document.getElementById('ayos-schedule');
+  const s2 = document.getElementById('exit-schedule');
+  if(s1) s1.textContent = schedule;
+  if(s2) s2.textContent = schedule;
+}
+
+// ---- Pull live Zoom link/schedule from the Settings tab of the Google Sheet (JSONP) ----
+function loadRemoteSettings(){
+  if(!CONFIG.GOOGLE_SCRIPT_URL.startsWith('http')) return; // not deployed yet
+  const cbName = 'applySettings_' + Date.now();
+  window[cbName] = function(data){
+    if(data && data.ayos_zoom_link){
+      applyZoomSettings(data.ayos_zoom_link, data.ayos_schedule_text || CONFIG.DEFAULT_AYOS_SCHEDULE);
+    }
+    delete window[cbName];
+    script.remove();
+  };
+  const script = document.createElement('script');
+  script.src = CONFIG.GOOGLE_SCRIPT_URL + '?action=getSettings&callback=' + cbName;
+  document.body.appendChild(script);
+}
+
+// ---- Nav ----
+function toggleNav(){ document.getElementById('navlinks').classList.toggle('open'); }
+function closeNav(){ document.getElementById('navlinks').classList.remove('open'); }
+
+// ---- Modals ----
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(ov=>{
+  ov.addEventListener('click', e=>{ if(e.target === ov) ov.classList.remove('open'); });
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
+    closeExitPopup();
+  }
+});
+
+// ---- Toast ----
+function showToast(text){
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.style.display = 'block';
+  setTimeout(()=>{ t.style.display = 'none'; }, 3500);
+}
+
+// ---- Product click tracking (Maxicare/PhilCare buy buttons) ----
+function trackClick(product){
+  if(typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: product });
+  if(!CONFIG.GOOGLE_SCRIPT_URL.startsWith('http')) return;
+  const utm = getUTMs();
+  fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+    method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ type:'product_click', product, ...utm, timestamp: new Date().toISOString() })
+  }).catch(()=>{});
+}
+
+// ---- AYOS orientation Zoom-link request (name/email/phone gate) ----
+function submitOrientation(evt, prefix){
+  evt.preventDefault();
+  const form = evt.target;
+  const msgEl = document.getElementById('msg-' + prefix);
+  const data = Object.fromEntries(new FormData(form).entries());
+  const utm = getUTMs();
+  const payload = {
+    type: 'ayos_orientation', status: 'New Leads', ...data, ...utm,
+    zoom_link: CURRENT_ZOOM_LINK, schedule: CURRENT_ZOOM_SCHEDULE,
+    timestamp: new Date().toISOString(), page_url: window.location.href
+  };
+
+  const finish = () => {
+    msgEl.className = 'form-msg ok';
+    msgEl.textContent = "Sent! Check " + data.email + " for your Zoom link.";
+    form.reset();
+    window.open(CURRENT_ZOOM_LINK, '_blank');
+    if(typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'ayos_orientation' });
+    if(prefix === 'exit') setTimeout(closeExitPopup, 1200);
+  };
+
+  if(!CONFIG.GOOGLE_SCRIPT_URL.startsWith('http')){
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = "Setup needed: paste your Google Apps Script URL into CONFIG first.";
+    return false;
+  }
+
+  fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+    method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).then(finish).catch(()=>{
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = "Something went wrong. Please try again or message us on WhatsApp.";
+  });
+  return false;
+}
+
+// ---- Lead form submit ----
+function submitLead(evt, type){
+  evt.preventDefault();
+  const form = evt.target;
+  const msgId = type === 'full_hmo_consultation' ? 'msg-consultation' : 'msg-corporate';
+  const msgEl = document.getElementById(msgId);
+  const data = Object.fromEntries(new FormData(form).entries());
+  const utm = getUTMs();
+  const payload = { type, status:'New Leads', ...data, ...utm, timestamp: new Date().toISOString(), page_url: window.location.href };
+
+  if(!CONFIG.GOOGLE_SCRIPT_URL.startsWith('http')){
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = "Setup needed: paste your Google Apps Script URL into CONFIG in the code before this form can save leads.";
+    return false;
+  }
+
+  fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+    method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).then(()=>{
+    msgEl.className = 'form-msg ok';
+    msgEl.textContent = "Thank you! Your request has been received. We'll send your Zoom details by email shortly.";
+    form.reset();
+    showToast("You're booked! Check your email soon 💌");
+    if(typeof fbq === 'function') fbq('track', 'Lead', { content_name: type });
+  }).catch(()=>{
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = "Something went wrong. Please try again or message us on WhatsApp.";
+  });
+  return false;
+}
+
+// ---- Chatbot ----
+const KB = [
+  { k:['maxicare','prima','lifesaver'], a:"Maxicare has two prepaid options: PRIMA (affordable, entry-level) and LifeSaver+ (more comprehensive benefits). Both work for individuals and families and are accepted in accredited clinics and hospitals nationwide." },
+  { k:['ayos','philcare'], a:"AYOS HealthCard is powered by PhilCare — an affordable prepaid healthcard accepted in partner clinics and hospitals. We also run a FREE weekly product orientation on Zoom every Tuesday." },
+  { k:['corporate','company','employees','business'], a:"For companies, we offer Full Coverage HMO plans tailored to your headcount and budget, with a free Zoom presentation for your team. Opening the booking form for you now.", openModal:'modal-corporate' },
+  { k:['pre-existing','preexisting','condition','sick'], a:"Good news — AYOS HealthCard covers pre-existing illnesses starting Day 1, no waiting period. Maxicare's coverage for pre-existing conditions depends on the specific plan. Best to share details in a free consultation so Anjeleen can match you to the right one." },
+  { k:['price','cost','magkano','rate','premium'], a:"Rates depend on your age, chosen plan, and coverage amount. Book a free consultation and Anjeleen will walk you through exact pricing for your situation." },
+  { k:['compare','difference','which plan','best plan'], a:"Maxicare and AYOS/PhilCare both cover outpatient and inpatient care, but differ in accredited hospitals and price points. A quick free consultation is the fastest way to see which fits you best." },
+  { k:['buy','purchase','paano bumili','how to get','checkout','activate'], a:"Great — here's exactly how to get covered:", cta:true },
+  { k:['talk','anjeleen','human','agent','representative'], a:"I'll connect you with Anjeleen directly on WhatsApp/Viber — tap the button below." , wa:true},
+  { k:['orientation','zoom link','webinar'], a:"Our free AYOS HealthCard orientation runs every Tuesday, 7:00–8:00 PM (Philippine Time) on Zoom. Tap 'AYOS HealthCard' above for the link." },
+  { k:['calculator','compute','estimate','magkano ang premium'], a:"You can get an instant premium estimate using our Maxicare calculator — tap 'Maxicare Plans' above, then 'Compute Your Premiums Here'." },
+  { k:['hospital','clinic','accredited','branch','malapit'], a:"You can check the full list of accredited hospitals and primary care clinic branches inside the Maxicare Plans section above." },
+  { k:['book','appointment','schedule','consultation','meeting','avail'], a:"Sure! Let's get you booked — opening the free consultation scheduling form for you now.", openModal:'modal-consultation' }
+];
+
+function addMsg(text, who){
+  const body = document.getElementById('chat-body');
+  const div = document.createElement('div');
+  div.className = 'msg ' + who;
+  div.textContent = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function addCTAButtons(){
+  const body = document.getElementById('chat-body');
+  const wrap = document.createElement('div');
+  wrap.style.display='flex'; wrap.style.gap='6px'; wrap.style.flexWrap='wrap'; wrap.style.alignSelf='flex-start';
+  wrap.innerHTML = `
+    <button class="qr-chip" onclick="openModal('modal-maxicare')">Buy Maxicare</button>
+    <button class="qr-chip" onclick="openModal('modal-ayos')">Buy AYOS/PhilCare</button>
+    <button class="qr-chip" onclick="openModal('modal-consultation')">Book Consultation</button>`;
+  body.appendChild(wrap);
+  body.scrollTop = body.scrollHeight;
+}
+
+function botReply(text){
+  const lower = text.toLowerCase();
+  const hit = KB.find(item => item.k.some(k => lower.includes(k)));
+  setTimeout(()=>{
+    if(hit){
+      addMsg(hit.a, 'bot');
+      if(hit.cta) addCTAButtons();
+      if(hit.wa){
+        const wrap = document.createElement('div');
+        wrap.innerHTML = `<a class="qr-chip" style="display:inline-block;" href="https://wa.me/${CONFIG.WHATSAPP_NUMBER}" target="_blank">💬 Chat on WhatsApp</a>`;
+        document.getElementById('chat-body').appendChild(wrap);
+      }
+      if(hit.openModal){
+        setTimeout(()=>{ openModal(hit.openModal); }, 700);
+      }
+    } else {
+      addMsg("Good question! For anything specific to your situation, message Anjeleen directly on WhatsApp/Viber and she'll help personally.", 'bot');
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `<a class="qr-chip" style="display:inline-block;" href="https://wa.me/${CONFIG.WHATSAPP_NUMBER}" target="_blank">💬 Chat on WhatsApp</a>`;
+      document.getElementById('chat-body').appendChild(wrap);
+    }
+  }, 450);
+}
+
+function askBot(text){ addMsg(text, 'user'); botReply(text); }
+function sendChat(){
+  const input = document.getElementById('chat-text');
+  if(!input.value.trim()) return;
+  askBot(input.value.trim());
+  input.value = '';
+}
+function toggleChat(){
+  const panel = document.getElementById('chat-panel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open') && document.getElementById('chat-body').children.length === 0){
+    addMsg("Hi! I'm Anjeleen's HMO Assistant 🤖 Ask me anything about Maxicare, AYOS HealthCard, or how to get started.", 'bot');
+  }
+}
+
+// ---- Exit intent popup ----
+let exitShown = false;
+function showExitPopup(){
+  if(exitShown || sessionStorage.getItem('exitShown')) return;
+  exitShown = true;
+  sessionStorage.setItem('exitShown','1');
+  document.getElementById('exit-popup').classList.add('open');
+}
+function closeExitPopup(){ document.getElementById('exit-popup').classList.remove('open'); }
+
+document.addEventListener('mouseout', e=>{
+  if(!e.relatedTarget && e.clientY < 10) showExitPopup();
+});
+setTimeout(showExitPopup, 45000); // mobile fallback: 45s on page
+
+// ---- Init ----
+setupLinks();
+loadRemoteSettings();
+</script>
+</body>
+</html>
