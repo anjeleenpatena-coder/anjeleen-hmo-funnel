@@ -761,7 +761,6 @@ const KB = [
   { k:['pre-existing','preexisting','condition','sick'], a:"Good news — AYOS HealthCard covers pre-existing illnesses starting Day 1, no waiting period. Maxicare's coverage for pre-existing conditions depends on the specific plan. Best to share details in a free consultation so Anjeleen can match you to the right one." },
   { k:['price','cost','magkano','rate','premium'], a:"Rates depend on your age, chosen plan, and coverage amount. Book a free consultation and Anjeleen will walk you through exact pricing for your situation." },
   { k:['compare','difference','which plan','best plan'], a:"Maxicare and AYOS/PhilCare both cover outpatient and inpatient care, but differ in accredited hospitals and price points. A quick free consultation is the fastest way to see which fits you best." },
-  { k:['buy','purchase','paano bumili','how to get','checkout','activate'], a:"Great — here's exactly how to get covered:", cta:true },
   { k:['talk','anjeleen','human','agent','representative'], a:"I'll connect you with Anjeleen directly on WhatsApp/Viber — tap the button below." , wa:true},
   { k:['orientation','zoom link','webinar'], a:"Our free AYOS HealthCard orientation runs every Tuesday, 7:00–8:00 PM (Philippine Time) on Zoom. Tap 'AYOS HealthCard' above for the link." },
   { k:['calculator','compute','estimate','magkano ang premium'], a:"You can get an instant premium estimate using our Maxicare calculator — tap 'Maxicare Plans' above, then 'Compute Your Premiums Here'." },
@@ -792,8 +791,31 @@ function addCTAButtons(){
 
 function botReply(text){
   const lower = text.toLowerCase();
-  const hit = KB.find(item => item.k.some(k => lower.includes(k)));
+  const actionWords = ['avail','buy','purchase','paano bumili','paano kumuha','how to get','checkout','activate','enroll','sign up','register','magpa','pabili','order'];
+  const isAction = actionWords.some(w => lower.includes(w));
+
   setTimeout(()=>{
+    if(isAction){
+      if(lower.includes('corporate') || lower.includes('company') || lower.includes('sme') || lower.includes('group') || lower.includes('freelancer')){
+        addMsg("Great — let's get your company set up. Opening the Corporate HMO booking form for you now.", 'bot');
+        setTimeout(()=>openModal('modal-corporate'), 700);
+      } else if(lower.includes('prima') || lower.includes('lifesaver') || lower.includes('maxicare')){
+        addMsg("Here's exactly how to get your Maxicare prepaid card — opening the Maxicare options for you now.", 'bot');
+        setTimeout(()=>openModal('modal-maxicare'), 700);
+      } else if(lower.includes('ayos') || lower.includes('philcare')){
+        addMsg("Here's how to get your AYOS/PhilCare prepaid card — opening it for you now.", 'bot');
+        setTimeout(()=>openModal('modal-ayos'), 700);
+      } else if(lower.includes('consult') || lower.includes('book') || lower.includes('appointment') || lower.includes('schedule')){
+        addMsg("Sure! Opening the free consultation booking form for you now.", 'bot');
+        setTimeout(()=>openModal('modal-consultation'), 700);
+      } else {
+        addMsg("Great — here's exactly how to get covered:", 'bot');
+        addCTAButtons();
+      }
+      return;
+    }
+
+    const hit = KB.find(item => item.k.some(k => lower.includes(k)));
     if(hit){
       addMsg(hit.a, 'bot');
       if(hit.cta) addCTAButtons();
