@@ -186,6 +186,10 @@ src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1"
 
   /* CHATBOT */
   .chat-fab{position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--pink);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(214,51,108,.4);z-index:150;}
+  .chat-teaser{position:fixed;bottom:92px;right:22px;max-width:210px;background:#fff;border-radius:16px;padding:12px 28px 12px 14px;box-shadow:var(--shadow);font-size:13px;font-weight:600;color:var(--pink-dark);z-index:149;display:none;line-height:1.4;}
+  .chat-teaser.show{display:block;}
+  .chat-teaser:after{content:"";position:absolute;bottom:-8px;right:26px;width:14px;height:14px;background:#fff;transform:rotate(45deg);}
+  .teaser-close{position:absolute;top:6px;right:8px;background:none;font-size:11px;color:var(--muted);font-weight:400;}
   .chat-panel{position:fixed;bottom:96px;right:22px;width:330px;max-width:88vw;max-height:70vh;background:#fff;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.18);display:none;flex-direction:column;z-index:150;overflow:hidden;}
   .chat-panel.open{display:flex;}
   .chat-head{background:var(--pink);color:#fff;padding:14px 16px;font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:10px;}
@@ -518,9 +522,37 @@ src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1"
 </div>
 
 <!-- ============ CHATBOT ============ -->
-<button class="chat-fab" onclick="toggleChat()" aria-label="Chat with Anjeleen's HMO Assistant">💬</button>
+<div class="chat-teaser" id="chat-teaser">
+  <button class="teaser-close" onclick="closeTeaser(event)">✕</button>
+  Hi! I'm Anjeleen's personal assistant. Click me to chat! 💬
+</div>
+<button class="chat-fab" onclick="toggleChat()" aria-label="Chat with Anjeleen's HMO Assistant">
+  <svg viewBox="0 0 40 40" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="8" cy="21" r="3.4" fill="#fff"/>
+    <circle cx="32" cy="21" r="3.4" fill="#fff"/>
+    <line x1="20" y1="9" x2="20" y2="4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="20" cy="3" r="2.2" fill="#fff"/>
+    <rect x="8" y="9" width="24" height="21" rx="10.5" fill="#fff"/>
+    <circle cx="15.5" cy="19" r="2.3" fill="var(--pink)"/>
+    <circle cx="24.5" cy="19" r="2.3" fill="var(--pink)"/>
+    <path d="M14.5 24c1.5 2 3.3 3 5.5 3s4-1 5.5-3" stroke="var(--pink)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  </svg>
+</button>
 <div class="chat-panel" id="chat-panel">
-  <div class="chat-head"><span class="bot-ic">🤖</span> Anjeleen's HMO Assistant</div>
+  <div class="chat-head">
+    <span class="bot-ic">
+      <svg viewBox="0 0 40 40" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="21" r="3.4" fill="var(--pink)"/>
+        <circle cx="32" cy="21" r="3.4" fill="var(--pink)"/>
+        <line x1="20" y1="9" x2="20" y2="4" stroke="var(--pink)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="20" cy="3" r="2.2" fill="var(--pink)"/>
+        <rect x="8" y="9" width="24" height="21" rx="10.5" fill="var(--pink)"/>
+        <circle cx="15.5" cy="19" r="2.3" fill="#fff"/>
+        <circle cx="24.5" cy="19" r="2.3" fill="#fff"/>
+        <path d="M14.5 24c1.5 2 3.3 3 5.5 3s4-1 5.5-3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      </svg>
+    </span> Anjeleen's HMO Assistant
+  </div>
   <div class="quick-replies">
     <button class="qr-chip" onclick="askBot('Tell me about Maxicare plans')">Maxicare Plans</button>
     <button class="qr-chip" onclick="askBot('Tell me about AYOS HealthCard')">AYOS HealthCard</button>
@@ -795,6 +827,20 @@ function toggleChat(){
   if(panel.classList.contains('open') && document.getElementById('chat-body').children.length === 0){
     addMsg("Hi! I'm Anjeleen's HMO Assistant 🤖 Ask me anything about Maxicare, AYOS HealthCard, or how to get started.", 'bot');
   }
+  hideTeaser();
+}
+
+// ---- Chat teaser bubble ----
+function hideTeaser(){
+  document.getElementById('chat-teaser').classList.remove('show');
+  sessionStorage.setItem('chatTeaserSeen','1');
+}
+function closeTeaser(evt){
+  evt.stopPropagation();
+  hideTeaser();
+}
+if(!sessionStorage.getItem('chatTeaserSeen')){
+  setTimeout(()=>{ document.getElementById('chat-teaser').classList.add('show'); }, 2500);
 }
 
 // ---- Exit intent popup ----
