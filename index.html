@@ -200,6 +200,13 @@ src="https://www.facebook.com/tr?id=1834150107770756&ev=PageView&noscript=1"
   .msg.user{background:var(--pink);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
   .quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;}
   .qr-chip{background:#fff;border:1.3px solid var(--pink-pale);color:var(--pink-dark);font-size:11.8px;padding:6px 10px;border-radius:999px;font-weight:600;}
+  .msg.bot a{color:var(--pink-dark);font-weight:600;text-decoration:underline;}
+  .msg .src{margin-top:8px;font-size:11.5px;color:var(--muted);line-height:1.4;}
+  .chat-links{display:flex;flex-direction:column;gap:6px;align-self:stretch;max-width:92%;}
+  .chat-link{display:block;width:100%;text-align:center;padding:9px 12px;border-radius:12px;font-family:inherit;font-size:12.6px;font-weight:600;line-height:1.3;text-decoration:none;cursor:pointer;border:1.5px solid var(--pink);}
+  .chat-link.primary{background:var(--pink);color:#fff;}
+  .chat-link.green{background:var(--green);color:#fff;border-color:var(--green);}
+  .chat-link.outline{background:#fff;color:var(--pink-dark);}
   .chat-input{display:flex;border-top:1px solid #f3e3ea;}
   .chat-input input{flex:1;border:none;padding:12px 14px;font-size:13.5px;font-family:inherit;}
   .chat-input button{background:var(--pink);color:#fff;padding:0 18px;font-weight:600;}
@@ -556,9 +563,10 @@ src="https://www.facebook.com/tr?id=1834150107770756&ev=PageView&noscript=1"
   <div class="quick-replies">
     <button class="qr-chip" onclick="askBot('Tell me about Maxicare plans')">Maxicare Plans</button>
     <button class="qr-chip" onclick="askBot('Tell me about AYOS HealthCard')">AYOS HealthCard</button>
+    <button class="qr-chip" onclick="askBot('How much are the prepaid cards?')">Prices</button>
+    <button class="qr-chip" onclick="askBot('Tell me about full HMO')">Full HMO</button>
     <button class="qr-chip" onclick="askBot('Compare plans')">Compare Plans</button>
     <button class="qr-chip" onclick="askBot('Book a consultation')">Book Consultation</button>
-    <button class="qr-chip" onclick="askBot('Corporate HMO for my company')">Corporate HMO</button>
     <button class="qr-chip" onclick="askBot('Talk to Anjeleen')">Talk to Anjeleen</button>
   </div>
   <div class="chat-body" id="chat-body"></div>
@@ -754,19 +762,275 @@ function submitLead(evt, type){
 }
 
 // ---- Chatbot ----
+// Answers are based on the official Maxicare website (maxicare.com.ph).
+// Link rules set by Anjeleen:
+//  - PRIMA topics  -> checkout with her PRIMA link
+//  - Emergency HMO -> checkout with her LifesavER link
+//  - Premium questions -> Maxicare premium calculator
+//  - Full HMO -> online application form, free consultation, or AYOS orientation
+//  - Anything the bot can't answer -> free consultation or AYOS orientation
+const MAXI = {
+  primaConsult: 'https://www.maxicare.com.ph/maxicare-plans/prima-consult-prepaid-health-card/',
+  primaAccess:  'https://www.maxicare.com.ph/maxicare-plans/prima-access-prepaid-health-card/',
+  primaElite:   'https://www.maxicare.com.ph/maxicare-plans/prima-elite-prepaid-health-card/',
+  lifesaver:    'https://www.maxicare.com.ph/maxicare-plans/lifesaver/',
+  lifesaverPlus:'https://www.maxicare.com.ph/maxicare-plans/lifesaver-plus/',
+  myMaxicare:   'https://www.maxicare.com.ph/maxicare-plans/mymaxicare/',
+  estimate:     'https://www.maxicare.com.ph/maxicare-plans/mymaxicare/plan-estimate/',
+  sme:          'https://www.maxicare.com.ph/maxicare-plans/sme-healthcare-plans/',
+  corporate:    'https://www.maxicare.com.ph/maxicare-plans/maxicare-corporate-health-care-plans/',
+  prepaid:      'https://www.maxicare.com.ph/maxicare-plans/#prepaid-plans',
+  site:         'https://www.maxicare.com.ph/',
+  scheduler:    'https://usqp.maxihealth.com.ph/member',
+  findDoctors:  'https://www.maxicare.com.ph/get-care/find-doctors-clinics-and-hospitals/',
+  pcc:          'https://www.maxicare.com.ph/get-care/primary-care-clinic/',
+  claims:       'https://www.maxicare.com.ph/member-section/reimburse-claims/',
+  gateway:      'https://registerme.maxicare.com.ph/',
+  mental:       'https://maxicaregenzen.medgrocer.com',
+  labs:         'https://www.maxihealth.com.ph/prima-labtests/',
+  primaConsultPlus: 'https://www.maxicare.com.ph/maxicare-plans/prima-consult-plus-prepaid-health-card/',
+  teleconsult:  'https://www.maxicare.com.ph/get-care/teleconsult/',
+  video:        'https://teleconsult.maxicare.com.ph/member-validation',
+  doctorAnywhere:'https://www.doctoranywhere.ph/maxicare-members/',
+  homecare:     'https://www.maxicare.com.ph/get-care/homecare/',
+  helpdesk:     'https://www.maxicare.com.ph/get-care/maxicare-helpdesk/',
+  apply:        'https://near.tl/sm/U-Sxniuk6',
+  applyEmail:   'anjeleenpatena.maxicare@gmail.com'
+};
+
+// k = keywords (longer match = higher score), a = answer (HTML), src = source links,
+// btns = extra buttons, first = which checkout button goes first,
+// only = show ONLY this checkout button, nocheck = hide checkout row,
+// openModal = open a form after replying, w = weight (lower = weaker match)
 const KB = [
-  { k:['maxicare','prima','lifesaver'], a:"Maxicare has two prepaid options: PRIMA (affordable, entry-level) and LifeSaver+ (more comprehensive benefits). Both work for individuals and families and are accepted in accredited clinics and hospitals nationwide." },
-  { k:['ayos','philcare'], a:"AYOS HealthCard is powered by PhilCare — an affordable prepaid healthcard accepted in partner clinics and hospitals. We also run a FREE weekly product orientation on Zoom every Tuesday." },
-  { k:['corporate','company','employees','business'], a:"For companies, we offer Full Coverage HMO plans tailored to your headcount and budget, with a free Zoom presentation for your team. Opening the booking form for you now.", openModal:'modal-corporate' },
-  { k:['pre-existing','preexisting','condition','sick'], a:"Good news — AYOS HealthCard covers pre-existing illnesses starting Day 1, no waiting period. Maxicare's coverage for pre-existing conditions depends on the specific plan. Best to share details in a free consultation so Anjeleen can match you to the right one." },
-  { k:['price','cost','magkano','rate','premium'], a:"Rates depend on your age, chosen plan, and coverage amount. Book a free consultation and Anjeleen will walk you through exact pricing for your situation." },
-  { k:['compare','difference','which plan','best plan'], a:"Maxicare and AYOS/PhilCare both cover outpatient and inpatient care, but differ in accredited hospitals and price points. A quick free consultation is the fastest way to see which fits you best." },
-  { k:['talk','anjeleen','human','agent','representative'], a:"I'll connect you with Anjeleen directly on WhatsApp/Viber — tap the button below." , wa:true},
-  { k:['orientation','zoom link','webinar'], a:"Our free AYOS HealthCard orientation runs every Tuesday, 7:00–8:00 PM (Philippine Time) on Zoom. Tap 'AYOS HealthCard' above for the link." },
-  { k:['calculator','compute','estimate','magkano ang premium'], a:"You can get an instant premium estimate using our Maxicare calculator — tap 'Maxicare Plans' above, then 'Compute Your Premiums Here'." },
-  { k:['hospital','clinic','accredited','branch','malapit'], a:"You can check the full list of accredited hospitals and primary care clinic branches inside the Maxicare Plans section above." },
-  { k:['book','appointment','schedule','consultation','meeting','avail'], a:"Sure! Let's get you booked — opening the free consultation scheduling form for you now.", openModal:'modal-consultation' }
+  { k:['corporate','company','employees','headcount','small business','msme','sme plan','groups','group plan','freelancer','business'],
+    a:"For companies, Maxicare has Full Coverage HMO plans for small businesses and corporations. Anjeleen will tailor one to your headcount and budget, with a free Zoom presentation for your team. Opening the booking form for you now.",
+    src:[['Maxicare SME plans',MAXI.sme],['Maxicare corporate plans',MAXI.corporate]],
+    nocheck:true, openModal:'modal-corporate' },
+
+  { k:['talk','anjeleen','human','agent','representative','call me','whatsapp','viber','contact'],
+    a:"I'll connect you with Anjeleen directly on WhatsApp/Viber. Tap the button below.",
+    btns:['wa'], nocheck:true },
+
+  { k:['premium','how much','magkano','presyo','price','cost','rates','mura','afford','computation','compute','calculator','estimate'],
+    a:"To see your exact premium, use the <b>Maxicare Premium Calculator</b>. It computes the price based on the applicant's <b>age</b> and <b>coverage priority</b>.<br><br>Prepaid card prices on the Maxicare site:<br>• PRIMA Consult: ₱999/year<br>• PRIMA Consult+: ₱1,199/year<br>• PRIMA Access: ₱9,999/year<br>• PRIMA Elite: ₱19,999/year<br>Prices can change, so check the final price at checkout.",
+    src:[['Maxicare plans overview',MAXI.prepaid]],
+    btns:['calcP'] },
+
+  { k:['mental health','mental','psychiatr','psycholog','counsel','depress','anxiety','therapy','stress','gen zen','genzen'],
+    a:"Mental health support is included in <b>PRIMA Consult+</b>, the upgraded PRIMA Consult (₱1,199/year). PRIMA Access and Elite include it too. It comes through the <b>Gen Zen</b> Mental Health Wellness Program: counseling, diagnostic support, wellness services and specialist recommendations.<br>To avail it:<br>1. Enroll: create an account on the Gen Zen page<br>2. Book: fill out the form and pick a time slot<br>3. Consult: join by video call<br>The basic ₱999 PRIMA Consult does not include Gen Zen. Check the full details and check out on the PRIMA link below.",
+    src:[['PRIMA Consult+ on Maxicare.com.ph',MAXI.primaConsultPlus],['Maxicare Gen Zen',MAXI.mental]],
+    btns:['mental'], only:'prima' },
+
+  { k:['full hmo','mymaxicare','inpatient','confinement','hospitalization','hospitalisation','admitted','ma-admit','hospital stay','admission','room and board','platinum','gold plan','silver plan','surgery','operasyon','comprehensive','family plan'],
+    a:"<b>Full HMO (MyMaxicare)</b> is Maxicare's complete plan:<br>• Inpatient care: room and board, ICU, surgeon fees, medicines<br>• Outpatient, preventive and emergency care<br>• 4 levels: Silver, Gold, Platinum and Platinum Plus (maximum benefit limit from ₱100,000 to ₱250,000)<br>Full HMO is priced by your age and plan level. Ready to apply? Fill out the online application form and send it to <a href=\"mailto:" + MAXI.applyEmail + "\">" + MAXI.applyEmail + "</a>. Or book a free online consultation with Anjeleen, or join the free AYOS product orientation on Zoom.",
+    src:[['MyMaxicare on Maxicare.com.ph',MAXI.myMaxicare]],
+    btns:['apply','consult','orient'], nocheck:true },
+
+  { k:['application form','apply for hmo','apply for full','apply for mymaxicare','apply hmo','mag-apply','mag apply','enroll in hmo'],
+    a:"To apply for <b>MyMaxicare Full HMO</b>:<br>1. Open the online application form below and fill it out<br>2. Send it to <a href=\"mailto:" + MAXI.applyEmail + "\">" + MAXI.applyEmail + "</a><br>Have questions first? Book a free online consultation with Anjeleen, or join the free AYOS product orientation.",
+    btns:['apply','email','consult','orient'], nocheck:true },
+
+  { k:['what is hmo','ano ang hmo','what is prepaid','ano ang prepaid','prepaid vs','difference between prepaid','prepaid or hmo','prepaid ba'],
+    a:"A <b>prepaid health card</b> covers specific services. PRIMA is for doctor visits and check-ups. LifesavER is for emergencies. A <b>full HMO</b> covers inpatient, outpatient, preventive and emergency care. Prepaid cards cost less, and you can buy them online today. Not sure which you need? Book a free consultation.",
+    src:[['Maxicare plans overview',MAXI.prepaid]],
+    btns:['consult'] },
+
+  { k:['compare','difference','which plan','best plan','vs','versus','alin ang','ano ang mas'],
+    a:"Quick guide:<br>• <b>PRIMA</b>: doctor visits and check-ups (from ₱999/year)<br>• <b>LifesavER</b>: emergencies and accidents (up to ₱50,000)<br>• <b>AYOS/PhilCare</b>: prepaid healthcard, pre-existing illness covered from Day 1<br>• <b>Full HMO</b>: hospital stays plus outpatient and emergency care<br>PRIMA has no hospital confinement, and LifesavER is for emergencies only.",
+    src:[['Maxicare plans overview',MAXI.prepaid]],
+    btns:['consult'] },
+
+  { k:['pre-existing','preexisting','pre existing','condition','may sakit','hypertension','diabetes','sakit'],
+    a:"Pre-existing conditions:<br>• <b>PRIMA</b>: welcome. You can consult about them, no exclusions<br>• <b>LifesavER</b>: covered up to ₱25,000 (not cancer or gallstones)<br>• <b>AYOS/PhilCare</b>: covered from Day 1, no waiting period<br>For a full HMO it depends on the plan. Book a free consultation and Anjeleen will check for you.",
+    src:[['PRIMA details',MAXI.primaConsult],['LifesavER details',MAXI.lifesaver]],
+    btns:['consult'] },
+
+  { k:['prima access','elite','diagnostic','ultrasound','homelab','imaging'],
+    a:"Need more than consults? Maxicare has bigger PRIMA cards:<br>• <b>PRIMA Access</b> (₱9,999/year): unlimited consults and teleconsults, 24 Set A lab tests, 2 chest X-rays, 2 ECGs, 1 ultrasound, mental health support, up to 50% off select medicines<br>• <b>PRIMA Elite</b> (₱19,999/year): unlimited consults and teleconsults, unlimited Set A lab tests, X-rays and ECGs, advanced diagnostics and imaging, mental health support, HomeLab access, upgraded accident insurance",
+    src:[['PRIMA Access',MAXI.primaAccess],['PRIMA Elite',MAXI.primaElite]],
+    only:'prima' },
+
+  { k:['laboratory','lab test','lab set','x-ray','xray','ecg','ct scan','lab result'],
+    a:"PRIMA lab tests are grouped into <b>Set A, Set B and Set C</b>. Set A covers routine tests like CBC, urinalysis, fecalysis, lipid profile and blood sugar. Set B and C cover more specialized tests.<br>• <b>PRIMA Consult / Consult+</b>: lab tests at PRIMA member rates in Maxicare Clinics<br>• <b>PRIMA Access</b>: 24 Set A lab tests, 2 chest X-rays, 2 ECGs and 1 ultrasound included<br>• <b>PRIMA Elite</b>: unlimited Set A lab tests, X-rays and ECGs<br>Lab tests must be endorsed by a Maxicare Clinic doctor, or you can bring a valid request from an outside doctor. Tap below to see the full lab test list. Maxicare says the list may change.",
+    src:[['PRIMA lab tests on Maxicare',MAXI.labs],['PRIMA Access',MAXI.primaAccess]],
+    btns:['labs'], only:'prima' },
+
+  { k:['prima','consult+','consult plus','unlimited consult','check-up','checkup','physical exam','outpatient','specialist','pediatrician'],
+    a:"<b>PRIMA</b> is Maxicare's prepaid card for doctor visits and check-ups. It is open to all ages, from newborns to seniors.<br>• Unlimited consultations at Maxicare Clinics nationwide<br>• Basic annual physical exam (Basic 5) with PRIMA Consult<br>• No paperwork, and pre-existing conditions are welcome<br>• Built-in accident insurance up to ₱20,000<br>PRIMA Consult starts at ₱999/year. <b>PRIMA Consult+</b> (₱1,199/year) adds mental health support and up to 50% off select medicines. PRIMA cards do not cover hospital stays or emergencies.",
+    src:[['PRIMA Consult on Maxicare.com.ph',MAXI.primaConsult]],
+    only:'prima' },
+
+  { k:['lifesaver','lifesaver+','lifesaver pro','emergency','accident','aksidente','ambulance','emergency room'],
+    a:"<b>LifesavER</b> is Maxicare's prepaid emergency card:<br>• Up to ₱50,000 emergency coverage<br>• Accidental death benefit up to ₱50,000<br>• Pre-existing conditions covered up to ₱25,000 (not cancer or gallstones)<br>• Ages 15 days to 65 years, valid for 1 year<br>• One use per card. You can buy more than one card a year<br>LifesavER+ and Pro also cover emergencies that lead to a hospital stay in a regular private room. LifesavER+ works in the 6 major hospitals too. See the current price at checkout.",
+    src:[['LifesavER on Maxicare.com.ph',MAXI.lifesaver],['LifesavER+',MAXI.lifesaverPlus]],
+    only:'lifesaver' },
+
+  { k:['ayos','philcare'],
+    a:"<b>AYOS HealthCard</b> is powered by PhilCare. It is an affordable prepaid healthcard accepted in partner clinics and hospitals. Pre-existing illness is covered from Day 1, with no waiting period. We also run a FREE product orientation on Zoom: {{SCHEDULE}}.",
+    btns:['orient'], first:'philcare' },
+
+  { k:['orientation','zoom','webinar','seminar','tuesday'],
+    a:"Our free AYOS HealthCard orientation is on Zoom: {{SCHEDULE}}. Enter your name, email and number, and we'll send you the Zoom link.",
+    btns:['orient'], first:'philcare' },
+
+  { k:['reimburse','reimbursement','claim','how to access services','access services','file a claim'],
+    a:"<b>How to reimburse a claim</b> (from Maxicare):<br>1. Download the Claims Reimbursement Form<br>2. Fill it out and gather the required documents<br>3. Attach a medical certificate, or have your doctor sign the form<br>4. Send the form and original documents to the Maxicare Claims office for your area (Luzon, Visayas or Mindanao)<br>You can also file through Member Gateway, but you still need to send the form and original documents. For emergency care at a non-affiliated hospital, submit within 10 days from discharge.",
+    src:[['How to Access Services and Reimburse Claims',MAXI.claims]],
+    btns:['claims','gateway'] , only:'prima' },
+
+  { k:['member gateway','gateway','member portal','create account','register account','letter of authorization','online account','my account'],
+    a:"Register on <b>Member Gateway</b> to see your member benefits and request a Letter of Authorization (LOA). Tap the button below to register.",
+    btns:['gateway'] , only:'prima' },
+
+  { k:['activate','activation','ecard','e-card','after buying','after purchase','how to use','paano gamitin','registration','reference code','gamitin'],
+    a:"After you buy a PRIMA card:<br>1. Click the registration link sent to your email<br>2. Fill in your details<br>3. Your eCard arrives by email within 24 hours<br>Show your eCard and 1 valid ID at a Maxicare Clinic. Register within 3 months of buying. The card is valid for 1 year and cannot be transferred.",
+    src:[['How to activate on Maxicare.com.ph',MAXI.primaConsult]],
+    only:'prima' },
+
+  { k:['valid id','accepted id','what id','anong id','id needed','id requirement'],
+    a:"Bring 1 valid photo ID that is not expired. Examples: Passport, Driver's License, SSS ID, UMID, PRC ID, Postal ID, Voter's ID, Senior Citizen ID, Company ID, Student ID, NBI or Police Clearance. See the full list on the Maxicare page.",
+    src:[['Accepted IDs on Maxicare.com.ph',MAXI.primaConsult]],
+    only:'prima' },
+
+  { k:['refund','cancel','cancellation','ibalik'],
+    a:"For PRIMA cards, Maxicare allows free cancellation and refund within 15 days of purchase, as long as the card has not been used.",
+    src:[['PRIMA reminders on Maxicare.com.ph',MAXI.primaConsult]],
+    only:'prima' },
+
+  { k:['insurance','aspire','critical illness','life insurance','accident insurance','death benefit'],
+    a:"Insurance with Maxicare cards:<br>• PRIMA has free built-in personal accident insurance (up to ₱20,000 with PRIMA Consult)<br>• Optional Aspire Care life insurance add-on for ages 18 to 65: ₱50,000 basic life, extra ₱25,000 for accidental death, ₱25,000 for major cancer, stroke or heart attack<br>• LifesavER has an accidental death benefit up to ₱50,000",
+    src:[['PRIMA insurance details',MAXI.primaConsult]],
+    first:'prima' },
+
+  { k:['teleconsult','telemedicine','online doctor','video call','video consult','videoconsult','doctor anywhere','call a doctor'],
+    a:"Maxicare Teleconsult lets you talk to a doctor without leaving home:<br>• Phone: teleconsult hotline (02) 8582-1980<br>• Video call: use the member validation page below<br>• Doctor Anywhere app: register with the Maxicare members page<br>PRIMA Consult: teleconsult is an optional add-on, bought together with the card. PRIMA Access and Elite: teleconsults are included.",
+    src:[['Maxicare Teleconsult',MAXI.teleconsult]],
+    btns:['teleconsult','video','doctoranywhere'], only:'prima' },
+
+  { k:['homecare','home care','home visit','nurse at home'],
+    a:"You can sign up for <b>Maxicare HomeCare</b> on the Maxicare website. Tap the button below.",
+    src:[['Maxicare HomeCare',MAXI.homecare]],
+    btns:['homecare'] , only:'prima' },
+
+  { k:['helpdesk','help desk','hotline','customer care','customer service','call maxicare','contact number','phone number'],
+    a:"Maxicare 24/7 Customer Hotline: +632 8582 1900 (PLDT) or +632 7798 7777 (Globe). Product inquiries: +632 7798 7770. Email: customercare@maxicare.com.ph. Tap below for the full list of Maxicare helpdesks.",
+    src:[['Maxicare Helpdesk',MAXI.helpdesk]],
+    btns:['helpdesk'] , only:'prima' },
+
+  { k:['how old','age limit','eligible','senior','newborn','baby','kids','child','elderly','lolo','lola','matanda'],
+    a:"Who can join:<br>• <b>PRIMA</b>: all ages, from newborns to seniors<br>• <b>LifesavER</b>: ages 15 days to 65 years<br>• Aspire Care life insurance add-on: ages 18 to 65<br>Tell Anjeleen the age and she will help you pick the right card.",
+    src:[['PRIMA details',MAXI.primaConsult]],
+    first:'prima' },
+
+  { k:['maxicare clinic','see a doctor','doctor visit','concierge','book a doctor','clinic appointment','schedule a doctor','pcc','primary care','nearest clinic','online booking','book pcc','pcc online','book online'],
+    a:"To see a doctor with your PRIMA card, book at a Maxicare Primary Care Clinic (PCC):<br>• Book online with the PCC scheduler (button below)<br>• Or call the Clinic Concierge: (02) 7798-7739<br>• Email: pcc.concierge@maxicare.com.ph<br>Bring your eCard and 1 valid ID. A specialist referral comes after a visit with a GP or Internal Medicine doctor.",
+    src:[['PRIMA details',MAXI.primaConsult]],
+    btns:['scheduler','clinics'], only:'prima' },
+
+  { k:['hospital','clinic','accredited','branch','malapit','klinika','network','affiliated','list of doctors','find a doctor','find doctor','dental','dentist','doctors'],
+    a:"Here is the full list of Maxicare doctors, hospitals, clinics and dental clinics. PRIMA is used at Maxicare Clinics. LifesavER works in Maxicare-affiliated hospitals nationwide. You can also find the nearest Primary Care Clinic below.",
+    src:[['Find Doctors, Clinics and Hospitals',MAXI.findDoctors]],
+    btns:['finddocs','clinics'], only:'prima' },
+
+  { k:['book','consultation','appointment','schedule','meeting','free consult','zoom call'],
+    a:"Sure! Opening the free online consultation form for you now. Prefer a group session? You can also join the free AYOS product orientation on Zoom.",
+    btns:['orient'], nocheck:true, openModal:'modal-consultation' },
+
+  { k:['buy','purchase','avail','paano bumili','paano kumuha','how to get','checkout','check out','enroll','sign up','pabili','bumili','kumuha'],
+    a:"Easy! Pick your prepaid card and check out online:",
+    w:0.5 },
+
+  { k:['thank','salamat'],
+    a:"You're welcome! If you need anything else, just ask. You can also check out a prepaid card anytime below.",
+    w:0.5 },
+
+  // Keep this one last: it wins only when nothing more specific matches.
+  { k:['maxicare','plans','prepaid'],
+    a:"Maxicare has two kinds of prepaid cards:<br>• <b>PRIMA</b>: unlimited doctor consults and check-ups, from ₱999/year<br>• <b>LifesavER</b>: emergency and accident cover, up to ₱50,000<br>Need hospital stays too? Ask me about the full HMO.",
+    src:[['Maxicare prepaid plans',MAXI.prepaid]],
+    first:'prima' }
 ];
+
+const GREETING = /^(hi|hello|hey|hola|kumusta|kamusta|good (morning|afternoon|evening)|magandang)\b/;
+
+// ---- Chat buttons ----
+function openOrientation(){
+  openModal('modal-ayos');
+  setTimeout(()=>{
+    const box = document.querySelector('#modal-ayos .orient-box');
+    if(box) box.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 200);
+}
+
+function chatBtn(key){
+  const defs = {
+    // checkout links (Anjeleen's agent links)
+    prima:     { t:'🛒 Check out PRIMA (Maxicare prepaid card)', href:withUTM(CONFIG.MAXICARE_PRIMA_LINK), track:'PRIMA (chat)', cls:'primary' },
+    lifesaver: { t:'🛒 Check out Emergency HMO (LifesavER)', href:withUTM(CONFIG.MAXICARE_LIFESAVER_LINK), track:'LifeSaver (chat)', cls:'primary' },
+    philcare:  { t:'🛒 Check out AYOS / PhilCare prepaid card', href:withUTM(CONFIG.PHILCARE_LINK), track:'PhilCare/AYOS (chat)', cls:'green' },
+    // Anjeleen's booking options
+    consult:   { t:'📅 Book a free online consultation', fn:()=>openModal('modal-consultation'), cls:'outline' },
+    consultP:  { t:'📅 Book a free online consultation', fn:()=>openModal('modal-consultation'), cls:'primary' },
+    orient:    { t:'🎓 Attend the free AYOS product orientation (Zoom)', fn:openOrientation, cls:'outline' },
+    wa:        { t:'💬 Chat on WhatsApp', href:'https://wa.me/' + CONFIG.WHATSAPP_NUMBER, cls:'green' },
+    // Maxicare links
+    calc:      { t:'🧮 Open the Maxicare Premium Calculator', href:CONFIG.MAXICARE_PREMIUM_CALCULATOR, track:'Premium Calculator', cls:'outline' },
+    calcP:     { t:'🧮 Open the Maxicare Premium Calculator', href:CONFIG.MAXICARE_PREMIUM_CALCULATOR, track:'Premium Calculator', cls:'primary' },
+    mental:    { t:'🧠 Go to Maxicare Gen Zen (mental health)', href:MAXI.mental, cls:'outline' },
+    claims:    { t:'📄 How to reimburse claims', href:MAXI.claims, cls:'outline' },
+    gateway:   { t:'📝 Register to Member Gateway', href:MAXI.gateway, cls:'outline' },
+    finddocs:  { t:'🏥 List of doctors, hospitals, clinics & dental', href:MAXI.findDoctors, track:'Accredited Hospitals', cls:'outline' },
+    clinics:   { t:'📍 Find the nearest Primary Care Clinic', href:MAXI.pcc, track:'Primary Care Clinics', cls:'outline' },
+    scheduler: { t:'🗓️ PCC online booking', href:MAXI.scheduler, cls:'outline' },
+    labs:      { t:'🧪 View PRIMA laboratory sets', href:MAXI.labs, cls:'outline' },
+    teleconsult:{ t:'📞 Maxicare Teleconsult', href:MAXI.teleconsult, cls:'outline' },
+    video:     { t:'🎥 Teleconsult by video call', href:MAXI.video, cls:'outline' },
+    doctoranywhere:{ t:'📱 Register on the Doctor Anywhere app', href:MAXI.doctorAnywhere, cls:'outline' },
+    homecare:  { t:'🏠 Sign up for HomeCare', href:MAXI.homecare, cls:'outline' },
+    helpdesk:  { t:'☎️ List of Maxicare helpdesks', href:MAXI.helpdesk, cls:'outline' },
+    apply:     { t:'📝 MyMaxicare Full HMO online application form', href:MAXI.apply, track:'MyMaxicare Application Form', cls:'primary' },
+    email:     { t:'✉️ Email your form to Anjeleen', href:'mailto:' + MAXI.applyEmail + '?subject=MyMaxicare%20Full%20HMO%20Application', cls:'outline' },
+    site:      { t:'🌐 Visit Maxicare.com.ph', href:MAXI.site, cls:'outline' }
+  };
+  const d = defs[key];
+  if(!d) return null;
+  let el;
+  if(d.href){
+    el = document.createElement('a');
+    el.href = d.href;
+    if(!d.href.startsWith('mailto:')){ el.target = '_blank'; el.rel = 'noopener'; }
+    if(d.track) el.addEventListener('click', ()=>trackClick(d.track));
+  } else {
+    el = document.createElement('button');
+    el.type = 'button';
+    el.addEventListener('click', d.fn);
+  }
+  el.className = 'chat-link ' + d.cls;
+  el.textContent = d.t;
+  return el;
+}
+
+function addButtons(keys){
+  if(!keys || !keys.length) return;
+  const body = document.getElementById('chat-body');
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-links';
+  keys.forEach(k=>{ const b = chatBtn(k); if(b) wrap.appendChild(b); });
+  body.appendChild(wrap);
+  body.scrollTop = body.scrollHeight;
+}
+
+// Checkout links. `only` shows just one card; otherwise all three (most relevant first).
+function addCheckoutRow(first, only){
+  if(only){ addButtons([only]); return; }
+  const order = ['prima','lifesaver','philcare'];
+  if(first && order.includes(first)){
+    order.splice(order.indexOf(first), 1);
+    order.unshift(first);
+  }
+  addButtons(order);
+}
 
 function addMsg(text, who){
   const body = document.getElementById('chat-body');
@@ -777,61 +1041,57 @@ function addMsg(text, who){
   body.scrollTop = body.scrollHeight;
 }
 
-function addCTAButtons(){
+function addRichMsg(html, src){
   const body = document.getElementById('chat-body');
-  const wrap = document.createElement('div');
-  wrap.style.display='flex'; wrap.style.gap='6px'; wrap.style.flexWrap='wrap'; wrap.style.alignSelf='flex-start';
-  wrap.innerHTML = `
-    <button class="qr-chip" onclick="openModal('modal-maxicare')">Buy Maxicare</button>
-    <button class="qr-chip" onclick="openModal('modal-ayos')">Buy AYOS/PhilCare</button>
-    <button class="qr-chip" onclick="openModal('modal-consultation')">Book Consultation</button>`;
-  body.appendChild(wrap);
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = html.replace('{{SCHEDULE}}', CURRENT_ZOOM_SCHEDULE);
+  if(src && src.length){
+    const s = document.createElement('div');
+    s.className = 'src';
+    s.appendChild(document.createTextNode('📄 Source: '));
+    src.forEach((item, i)=>{
+      if(i > 0) s.appendChild(document.createTextNode(' · '));
+      const a = document.createElement('a');
+      a.href = item[1]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = item[0];
+      s.appendChild(a);
+    });
+    div.appendChild(s);
+  }
+  body.appendChild(div);
   body.scrollTop = body.scrollHeight;
 }
 
-function botReply(text){
-  const lower = text.toLowerCase();
-  const actionWords = ['avail','buy','purchase','paano bumili','paano kumuha','how to get','checkout','activate','enroll','sign up','register','magpa','pabili','order'];
-  const isAction = actionWords.some(w => lower.includes(w));
+function findEntry(lower){
+  let best = null, bestScore = 0;
+  KB.forEach(item=>{
+    let s = 0;
+    item.k.forEach(k=>{ if(lower.includes(k)) s += k.length; });
+    s *= (item.w || 1);
+    if(s > bestScore){ bestScore = s; best = item; }
+  });
+  return best;
+}
 
+function botReply(text){
+  const lower = text.toLowerCase().trim();
   setTimeout(()=>{
-    if(isAction){
-      if(lower.includes('corporate') || lower.includes('company') || lower.includes('sme') || lower.includes('group') || lower.includes('freelancer')){
-        addMsg("Great — let's get your company set up. Opening the Corporate HMO booking form for you now.", 'bot');
-        setTimeout(()=>openModal('modal-corporate'), 700);
-      } else if(lower.includes('prima') || lower.includes('lifesaver') || lower.includes('maxicare')){
-        addMsg("Here's exactly how to get your Maxicare prepaid card — opening the Maxicare options for you now.", 'bot');
-        setTimeout(()=>openModal('modal-maxicare'), 700);
-      } else if(lower.includes('ayos') || lower.includes('philcare')){
-        addMsg("Here's how to get your AYOS/PhilCare prepaid card — opening it for you now.", 'bot');
-        setTimeout(()=>openModal('modal-ayos'), 700);
-      } else if(lower.includes('consult') || lower.includes('book') || lower.includes('appointment') || lower.includes('schedule')){
-        addMsg("Sure! Opening the free consultation booking form for you now.", 'bot');
-        setTimeout(()=>openModal('modal-consultation'), 700);
-      } else {
-        addMsg("Great — here's exactly how to get covered:", 'bot');
-        addCTAButtons();
-      }
+    if(GREETING.test(lower) && lower.length < 25){
+      addRichMsg("Hi! 👋 I can help with Maxicare prepaid cards (PRIMA and LifesavER), AYOS/PhilCare, and full HMO plans. What would you like to know?");
       return;
     }
-
-    const hit = KB.find(item => item.k.some(k => lower.includes(k)));
-    if(hit){
-      addMsg(hit.a, 'bot');
-      if(hit.cta) addCTAButtons();
-      if(hit.wa){
-        const wrap = document.createElement('div');
-        wrap.innerHTML = `<a class="qr-chip" style="display:inline-block;" href="https://wa.me/${CONFIG.WHATSAPP_NUMBER}" target="_blank">💬 Chat on WhatsApp</a>`;
-        document.getElementById('chat-body').appendChild(wrap);
-      }
-      if(hit.openModal){
-        setTimeout(()=>{ openModal(hit.openModal); }, 700);
-      }
-    } else {
-      addMsg("Good question! For anything specific to your situation, message Anjeleen directly on WhatsApp/Viber and she'll help personally.", 'bot');
-      const wrap = document.createElement('div');
-      wrap.innerHTML = `<a class="qr-chip" style="display:inline-block;" href="https://wa.me/${CONFIG.WHATSAPP_NUMBER}" target="_blank">💬 Chat on WhatsApp</a>`;
-      document.getElementById('chat-body').appendChild(wrap);
+    const hit = findEntry(lower);
+    if(!hit){
+      // Can't answer: suggest a free consultation or the AYOS product orientation
+      addRichMsg("I don't have the answer to that yet. Book a free online consultation with Anjeleen, or join the free AYOS product orientation on Zoom. You can also browse the Maxicare website.");
+      addButtons(['consultP','orient','site']);
+      return;
+    }
+    addRichMsg(hit.a, hit.src);
+    addButtons(hit.btns);
+    if(!hit.nocheck) addCheckoutRow(hit.first, hit.only);
+    if(hit.openModal){
+      setTimeout(()=>{ openModal(hit.openModal); }, 900);
     }
   }, 450);
 }
@@ -847,7 +1107,7 @@ function toggleChat(){
   const panel = document.getElementById('chat-panel');
   panel.classList.toggle('open');
   if(panel.classList.contains('open') && document.getElementById('chat-body').children.length === 0){
-    addMsg("Hi! I'm Anjeleen's HMO Assistant 🤖 Ask me anything about Maxicare, AYOS HealthCard, or how to get started.", 'bot');
+    addMsg("Hi! I'm Anjeleen's HMO Assistant 🤖 Ask me about Maxicare prepaid cards, AYOS/PhilCare, or full HMO. I'll share the links to check out.", 'bot');
   }
   hideTeaser();
 }
