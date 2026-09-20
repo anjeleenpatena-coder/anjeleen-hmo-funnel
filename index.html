@@ -923,8 +923,8 @@ const KB = [
     src:[['PRIMA details',MAXI.primaConsult]],
     first:'prima' },
 
-  { k:['maxicare clinic','see a doctor','doctor visit','concierge','book a doctor','clinic appointment','schedule a doctor','pcc','primary care','nearest clinic','online booking','book pcc','pcc online','book online'],
-    a:"To see a doctor with your PRIMA card, book at a Maxicare Primary Care Clinic (PCC):<br>• Book online with the PCC scheduler (button below)<br>• Or call the Clinic Concierge: (02) 7798-7739<br>• Email: pcc.concierge@maxicare.com.ph<br>Bring your eCard and 1 valid ID. A specialist referral comes after a visit with a GP or Internal Medicine doctor.",
+  { id:'pcc', k:['pcc','maxicare clinic','see a doctor','doctor visit','concierge','book a doctor','clinic appointment','schedule a doctor','primary care','nearest clinic','online booking','booking schedule','check up schedule','check-up schedule','checkup schedule','book a check up','book a check-up','book check up','check up appointment','check-up appointment','clinic schedule','book online'],
+    a:"For a check-up or doctor visit at a Maxicare Primary Care Clinic (PCC), book your schedule with the <b>PCC Online Booking</b> (button below).<br>• Or call the Clinic Concierge: (02) 7798-7739<br>• Or email: pcc.concierge@maxicare.com.ph<br>Bring your PRIMA eCard and 1 valid ID. A specialist referral comes after a visit with a GP or Internal Medicine doctor.",
     src:[['PRIMA details',MAXI.primaConsult]],
     btns:['scheduler','clinics'], only:'prima' },
 
@@ -982,7 +982,7 @@ function chatBtn(key){
     gateway:   { t:'📝 Register to Member Gateway', href:MAXI.gateway, cls:'outline' },
     finddocs:  { t:'🏥 List of doctors, hospitals, clinics & dental', href:MAXI.findDoctors, track:'Accredited Hospitals', cls:'outline' },
     clinics:   { t:'📍 Find the nearest Primary Care Clinic', href:MAXI.pcc, track:'Primary Care Clinics', cls:'outline' },
-    scheduler: { t:'🗓️ PCC online booking', href:MAXI.scheduler, cls:'outline' },
+    scheduler: { t:'🗓️ PCC Online Booking', href:MAXI.scheduler, cls:'primary' },
     labs:      { t:'🧪 View PRIMA laboratory sets', href:MAXI.labs, cls:'outline' },
     teleconsult:{ t:'📞 Maxicare Teleconsult', href:MAXI.teleconsult, cls:'outline' },
     video:     { t:'🎥 Teleconsult by video call', href:MAXI.video, cls:'outline' },
@@ -1080,7 +1080,7 @@ function botReply(text){
       addRichMsg("Hi! 👋 I can help with Maxicare prepaid cards (PRIMA and LifesavER), AYOS/PhilCare, and full HMO plans. What would you like to know?");
       return;
     }
-    const hit = findEntry(lower);
+    const hit = lower.includes('pcc') ? KB.find(e => e.id === 'pcc') : findEntry(lower);
     if(!hit){
       // Can't answer: suggest a free consultation or the AYOS product orientation
       addRichMsg("I don't have the answer to that yet. Book a free online consultation with Anjeleen, or join the free AYOS product orientation on Zoom. You can also browse the Maxicare website.");
